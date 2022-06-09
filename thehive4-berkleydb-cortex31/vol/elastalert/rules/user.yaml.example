@@ -1,0 +1,56 @@
+name: "Elasticsearch User"
+type: "any"
+index: ".siem-signals-default"
+is_enabled: true
+#realert:
+#  minutes: 5
+aggregation:
+    minutes: 10
+terms_size: 50
+query_key: 'user.name'
+aggregation_key: 'user.name'
+aggregation_by_match_time: true
+
+timestamp_field: "@timestamp"
+timestamp_type: "iso"
+
+filter:
+- term:
+    signal.status: "open"
+- query:
+    wildcard:
+      user.name: "*"
+
+alert: hivealerter
+
+hive_connection:
+  hive_host: http://thehive
+  hive_port: 9000
+  hive_apikey: XXXXXX
+
+hive_alert_config:
+  type: 'external'
+  source: 'elastalert'
+  severity: 2
+  tags: [kibana.alert.rule.name, agent.name, user.name]
+  tlp: 3
+  status: 'New'
+  follow: True
+  # title_args: [rule.name]
+  # title: '{0}'
+  description_args: [rule.name]
+  description: '{0}'
+
+
+
+hive_observable_data_mapping:
+    - ip: source.ip
+    - ip: destination.ip
+    - ip: host.ip
+    - domain: source.domain
+    - domain: destination.domain
+    - domain: host.name
+    - domain: dns.question.name
+    - hash: hash.md5
+    - hash: hash.sha1
+    - hash: hash.sha256
