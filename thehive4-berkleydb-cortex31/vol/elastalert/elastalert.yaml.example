@@ -10,7 +10,7 @@ es_host: elastic.host.name
 es_port: 443
 use_ssl: true
 es_username: XXXXXX
-es_password: 1uXXXXXX
+es_password: XXXXXX
 writeback_index: elastalert-status
 
 alert_time_limit:
